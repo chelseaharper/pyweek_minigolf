@@ -20,5 +20,5 @@ game_instance = game.Game(screen, [course1], start_menu)
 #Main Game Loop; all game mechanics managed in game_instance.update()
 while True:
     clock.tick(50)
-    game_instance.update()
+    game_instance.update(1/50)
     pygame.display.flip()

@@ -6,11 +6,15 @@ class Course():
         self.objects = objects
 
         self.tiles = []
+        self.start = None
         with open(f"images/{coursename}.txt") as coursefile:
-            for line in coursefile:
+            for y, line in enumerate(coursefile):
                 row = []
                 for i in range(0, len(line) - 1, 2):
                     row.append(line[i])
+                    if line[i] == utilities.COURSE_TILE_START:
+                        x = i // 2
+                        self.start = (x, y)
                 self.tiles.append(row)
 
     def render_course(self, screen):
