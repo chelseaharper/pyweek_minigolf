@@ -1,13 +1,16 @@
 import pygame
 import utilities
 
+
 class Object:
     def __init__(self, x, y, width, height, image):
         self.position = [x * utilities.SCALE, y * utilities.SCALE]
         self.width = width
         self.height = height
         self.image = pygame.image.load(f"images/{image}.png")
-        self.image = pygame.transform.scale(self.image, (utilities.SCALE, utilities.SCALE))
+        self.image = pygame.transform.scale(
+            self.image, (utilities.SCALE, utilities.SCALE)
+        )
 
     def update_position(self, newposition):
         self.position = [newposition[0], newposition[1]]

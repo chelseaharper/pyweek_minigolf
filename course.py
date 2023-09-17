@@ -1,7 +1,8 @@
 import pygame
 import utilities
 
-class Course():
+
+class Course:
     def __init__(self, coursename, objects):
         self.objects = objects
 
@@ -21,12 +22,26 @@ class Course():
         for y_pos, line in enumerate(self.tiles):
             for x_pos, tile in enumerate(line):
                 image = course_tile_images[tile]
-                rect = pygame.Rect (x_pos * utilities.SCALE, y_pos * utilities.SCALE, utilities.SCALE, utilities.SCALE)
+                rect = pygame.Rect(
+                    x_pos * utilities.SCALE,
+                    y_pos * utilities.SCALE,
+                    utilities.SCALE,
+                    utilities.SCALE,
+                )
                 screen.blit(image, rect)
 
+
 course_tile_images = {
-    utilities.COURSE_TILE_GRASS : pygame.transform.scale(pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)),
-    utilities.COURSE_TILE_WATER : pygame.transform.scale(pygame.image.load("images/water.png"), (utilities.SCALE, utilities.SCALE)),
-    utilities.COURSE_TILE_OFFCOURSE : pygame.transform.scale(pygame.image.load("images/dirt.png"), (utilities.SCALE, utilities.SCALE)),
-    utilities.COURSE_TILE_START : pygame.transform.scale(pygame.image.load("images/start.png"), (utilities.SCALE, utilities.SCALE))
+    utilities.COURSE_TILE_GRASS: pygame.transform.scale(
+        pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)
+    ),
+    utilities.COURSE_TILE_WATER: pygame.transform.scale(
+        pygame.image.load("images/water.png"), (utilities.SCALE, utilities.SCALE)
+    ),
+    utilities.COURSE_TILE_OFFCOURSE: pygame.transform.scale(
+        pygame.image.load("images/dirt.png"), (utilities.SCALE, utilities.SCALE)
+    ),
+    utilities.COURSE_TILE_START: pygame.transform.scale(
+        pygame.image.load("images/start.png"), (utilities.SCALE, utilities.SCALE)
+    ),
 }

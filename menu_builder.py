@@ -6,21 +6,20 @@ pygame.font.init()
 font = pygame.font.Font(None, 45)
 
 
-class Menu():
+class Menu:
     def __init__(self, screen, buttons):
         self.screen = screen
         self.buttons = buttons
-    
-    def set_up(self): # Used to set visuals; may no longer need
+
+    def set_up(self):  # Used to set visuals; may no longer need
         pass
-    
+
     def render_menu(self, screen):
         for i in self.buttons:
             i.render(screen)
 
 
-
-class Button():
+class Button:
     def __init__(self, x, y, name, image_name1, image_name2, width, height):
         self.position = [x, y]
         self.width = width
@@ -34,14 +33,17 @@ class Button():
         self.clicked = False
         self.text = font.render(name, True, utilities.WHITE)
         self.textRect = self.text.get_rect()
-        self.textRect.center = (self.position[0] + (width // 2), self.position[1] + (height // 2))
+        self.textRect.center = (
+            self.position[0] + (width // 2),
+            self.position[1] + (height // 2),
+        )
 
     def render(self, screen):
         screen.blit(self.image, self.rect)
         screen.blit(self.text, self.textRect)
 
     def handle_events(self):
-        #Get the mouse position
+        # Get the mouse position
         action = False
         position = pygame.mouse.get_pos()
         # Check if the mouse is over the button and has been clicked
@@ -55,6 +57,23 @@ class Button():
             self.clicked = False
         return action
 
-quit_button = Button(utilities.SCREEN_WIDTH // 3, 150, "Quit Game", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
-start_button = Button(utilities.SCREEN_WIDTH // 3, 100, "Play Game", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
-#resume_button = Button(utilities.SCREEN_WIDTH // 3, 100, "Resume", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
+
+quit_button = Button(
+    utilities.SCREEN_WIDTH // 3,
+    150,
+    "Quit Game",
+    "buttonLong_blue",
+    "buttonLong_blue_pressed",
+    200,
+    50,
+)
+start_button = Button(
+    utilities.SCREEN_WIDTH // 3,
+    100,
+    "Play Game",
+    "buttonLong_blue",
+    "buttonLong_blue_pressed",
+    200,
+    50,
+)
+# resume_button = Button(utilities.SCREEN_WIDTH // 3, 100, "Resume", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
