@@ -8,7 +8,6 @@ class Game:
     def __init__(self, screen, courses, menu):
         self.screen = screen
         self.objects = []
-        self.state = utilities.GameState.NONE
         self.playstate = utilities.PlayState.MENU
         self.courses = courses
         self.course = None
