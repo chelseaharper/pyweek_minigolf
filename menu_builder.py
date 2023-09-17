@@ -1,6 +1,7 @@
 import pygame
 import utilities
 
+
 pygame.font.init()
 font = pygame.font.Font(None, 45)
 
@@ -43,14 +44,15 @@ class Button():
         # Check if the mouse is over the button and has been clicked
         if self.rect.collidepoint(position):
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.image = pygame.image.load(f"images/{self.image_name2}.png")
                 self.clicked = True
                 action = True
-                self.image = pygame.image.load(f"images/{self.image_name2}.png")
         if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
             self.image = pygame.image.load(f"images/{self.image_name1}.png")
+            self.clicked = False
         screen.blit(self.image, (self.rect.x, self.rect.y))
         return action
 
 quit_button = Button(utilities.SCREEN_WIDTH // 3, 150, "Quit Game", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
-start_button = Button(utilities.SCREEN_WIDTH // 3, 100, "Start Game", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
+start_button = Button(utilities.SCREEN_WIDTH // 3, 100, "Play Game", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
+#resume_button = Button(utilities.SCREEN_WIDTH // 3, 100, "Resume", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
