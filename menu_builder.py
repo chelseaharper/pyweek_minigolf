@@ -16,8 +16,7 @@ class Menu():
     
     def render_menu(self, screen):
         for i in self.buttons:
-            screen.blit(i.image, i.rect)
-            screen.blit(i.text, i.textRect)
+            i.render(screen)
 
 
 
@@ -36,8 +35,12 @@ class Button():
         self.text = font.render(name, True, utilities.WHITE)
         self.textRect = self.text.get_rect()
         self.textRect.center = (self.position[0] + (width // 2), self.position[1] + (height // 2))
-    
-    def draw(self, screen):
+
+    def render(self, screen):
+        screen.blit(self.image, self.rect)
+        screen.blit(self.text, self.textRect)
+
+    def handle_events(self):
         #Get the mouse position
         action = False
         position = pygame.mouse.get_pos()
@@ -50,7 +53,6 @@ class Button():
         if pygame.mouse.get_pressed()[0] == 0:
             self.image = pygame.image.load(f"images/{self.image_name1}.png")
             self.clicked = False
-        screen.blit(self.image, (self.rect.x, self.rect.y))
         return action
 
 quit_button = Button(utilities.SCREEN_WIDTH // 3, 150, "Quit Game", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)

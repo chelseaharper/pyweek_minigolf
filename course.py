@@ -2,28 +2,23 @@ import pygame
 import utilities
 
 class Course():
-    def __init__(self, objects):
-        self.courselist = []
+    def __init__(self, coursename, objects):
         self.objects = objects
-    
-    def load_course(self, coursename):
+
+        self.tiles = []
         with open(f"images/{coursename}.txt") as coursefile:
             for line in coursefile:
-                tiles = []
+                row = []
                 for i in range(0, len(line) - 1, 2):
-                    tiles.append(line[i])
-                self.courselist.append(tiles)
-    
+                    row.append(line[i])
+                self.tiles.append(row)
+
     def render_course(self, screen):
-        y_pos = 0
-        for line in self.courselist:
-            x_pos = 0
-            for tile in line:
+        for y_pos, line in enumerate(self.tiles):
+            for x_pos, tile in enumerate(line):
                 image = course_tile_images[tile]
                 rect = pygame.Rect (x_pos * utilities.SCALE, y_pos * utilities.SCALE, utilities.SCALE, utilities.SCALE)
                 screen.blit(image, rect)
-                x_pos += 1
-            y_pos += 1
 
 course_tile_images = {
     utilities.COURSE_TILE_GRASS : pygame.transform.scale(pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)),

@@ -24,6 +24,5 @@ COURSE_TILE_OFFCOURSE = "`"
 
 OFFCOURSE = [COURSE_TILE_WATER, COURSE_TILE_OFFCOURSE]
 
-def end_game(state):
-    state = GameState.ENDED
+def end_game():
     exit()
