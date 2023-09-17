@@ -15,6 +15,8 @@ SCREEN_WIDTH = 640
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
+SCALE = 32
+
 def end_game(state):
     state = GameState.ENDED
     exit()

@@ -7,7 +7,7 @@ class Game():
         self.objects = []
         self.state = utilities.GameState.NONE
         self.playstate = utilities.PlayState.MENU
-        self.course = course
+        self.course = pygame.image.load(f"images/{course}.png")
         self.menu = menu
     
     def set_up(self):
@@ -27,9 +27,9 @@ class Game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 utilities.end_game(self.state)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                for i in self.menu.buttons:
-                    if i.draw(self.screen):
-                        print("CLIKCED!!!")
-                        if i.name == "Quit Game":
-                            utilities.end_game(self.state)
+            for i in self.menu.buttons:
+                if i.draw(self.screen):
+                    if i.name == "Quit Game":
+                        utilities.end_game(self.state)
+                    if i.name == "Start Game":
+                        pass

@@ -10,7 +10,6 @@ clock = pygame.time.Clock()
 state = utilities.GameState.NONE
 start_menu = menu_builder.Menu(screen, [menu_builder.quit_button, menu_builder.start_button])
 play_menu = menu_builder.Menu(screen, [menu_builder.quit_button, menu_builder.start_button])
-#start_menu.set_up()
 
 game_instance = game.Game(screen, "start", start_menu)
 game_instance.set_up()
