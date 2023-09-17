@@ -53,10 +53,7 @@ class Game:
                 mass=mass, inner_radius=0, outer_radius=radius
             )
             body = pymunk.Body(mass, moment)
-            body.position = (
-                obj.position[0] + utilities.SCALE / 2,
-                obj.position[1] + utilities.SCALE / 2,
-            )
+            body.position = obj.position
             shape = pymunk.Circle(body, radius)
             shape.elasticity = 0.9
             self.space.add(body, shape)
@@ -70,12 +67,7 @@ class Game:
         if self.course is not None:
             self.space.step(dt)
             for i, body in enumerate(self.bodies):
-                self.objects[i].update_position(
-                    (
-                        body.position[0] - utilities.SCALE / 2,
-                        body.position[1] - utilities.SCALE / 2,
-                    )
-                )
+                self.objects[i].update_position(body.position)
             self.course.render_course(self.screen)
             for object in self.objects:
                 object.render_object(self.screen)
