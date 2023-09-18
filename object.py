@@ -10,7 +10,7 @@ class Object:
         self.needsbody = needsbody
         self.image = pygame.image.load(f"images/{image}.png")
         self.image = pygame.transform.scale(
-            self.image, (utilities.SCALE, utilities.SCALE)
+            self.image, (width, height)
         )
 
     def update_position(self, newposition):

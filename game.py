@@ -36,10 +36,10 @@ class Game:
                     self.space.add(ground)
 
         self.ball = object.Object(
-            self.course.start[0],
-            self.course.start[1],
-            utilities.SCALE,
-            utilities.SCALE,
+            self.course.start[0] + 0.1,
+            self.course.start[1] + 0.1,
+            utilities.SCALE * 0.75,
+            utilities.SCALE * 0.75,
             "ball",
         )
         self.objects = []
