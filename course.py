@@ -13,9 +13,11 @@ class Course:
                 row = []
                 for i in range(0, len(line) - 1, 2):
                     row.append(line[i])
+                    x = i // 2
                     if line[i] == utilities.COURSE_TILE_START:
-                        x = i // 2
                         self.start = (x, y)
+                    elif line[i] == utilities.COURSE_TILE_HOLE:
+                        self.win = (x, y)
                 self.tiles.append(row)
 
     def render_course(self, screen):
@@ -40,6 +42,9 @@ course_tile_images = {
     ),
     utilities.COURSE_TILE_OFFCOURSE: pygame.transform.scale(
         pygame.image.load("images/dirt.png"), (utilities.SCALE, utilities.SCALE)
+    ),
+    utilities.COURSE_TILE_HOLE: pygame.transform.scale(
+        pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)
     ),
     utilities.COURSE_TILE_START: pygame.transform.scale(
         pygame.image.load("images/start.png"), (utilities.SCALE, utilities.SCALE)
