@@ -1,5 +1,6 @@
 import pygame
 import utilities
+import object
 
 
 class Course:
@@ -19,6 +20,13 @@ class Course:
                     elif line[i] == utilities.COURSE_TILE_HOLE:
                         self.hole = [x, y]
                 self.tiles.append(row)
+            self.objects.append(object.Object(
+                                self.hole[0],
+                                self.hole[1],
+                                utilities.SCALE,
+                                utilities.SCALE,
+                                "hole",
+                                needsbody = False))
 
     def render_course(self, screen):
         for y_pos, line in enumerate(self.tiles):
@@ -44,7 +52,7 @@ course_tile_images = {
         pygame.image.load("images/dirt.png"), (utilities.SCALE, utilities.SCALE)
     ),
     utilities.COURSE_TILE_HOLE: pygame.transform.scale(
-        pygame.image.load("images/hole.png"), (utilities.SCALE, utilities.SCALE)
+        pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)
     ),
     utilities.COURSE_TILE_START: pygame.transform.scale(
         pygame.image.load("images/start.png"), (utilities.SCALE, utilities.SCALE)

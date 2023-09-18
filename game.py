@@ -46,18 +46,18 @@ class Game:
         self.bodies = []
         for obj in [self.ball] + self.course.objects:
             self.objects.append(obj)
-
-            mass = 1
-            radius = utilities.SCALE / 2
-            moment = pymunk.moment_for_circle(
-                mass=mass, inner_radius=0, outer_radius=radius
-            )
-            body = pymunk.Body(mass, moment)
-            body.position = obj.position
-            shape = pymunk.Circle(body, radius)
-            shape.elasticity = 0.9
-            self.space.add(body, shape)
-            self.bodies.append(body)
+            if obj.needsbody == True:
+                mass = 1
+                radius = utilities.SCALE / 2
+                moment = pymunk.moment_for_circle(
+                    mass=mass, inner_radius=0, outer_radius=radius
+                )
+                body = pymunk.Body(mass, moment)
+                body.position = obj.position
+                shape = pymunk.Circle(body, radius)
+                shape.elasticity = 0.9
+                self.space.add(body, shape)
+                self.bodies.append(body)
 
     def update(self, dt):
         self.handle_events()  # accepts input from keyboard or mouse
