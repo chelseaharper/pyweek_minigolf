@@ -68,12 +68,18 @@ class Game:
             self.space.step(dt)
             for i, body in enumerate(self.bodies):
                 self.objects[i].update_position(body.position)
+                if self.check_position():
+                    self.bodies[0].velocity = (0, 0)
             self.course.render_course(self.screen)
             for object in self.objects:
                 object.render_object(self.screen)
 
         if self.playstate == utilities.PlayState.MENU:
             self.menu.render_menu(self.screen)
+
+    def check_position(self):
+        if self.ball.position == self.course.hole:
+            return True
 
     def handle_events(self):
         for event in pygame.event.get():
