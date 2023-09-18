@@ -17,7 +17,7 @@ class Course:
                     if line[i] == utilities.COURSE_TILE_START:
                         self.start = (x, y)
                     elif line[i] == utilities.COURSE_TILE_HOLE:
-                        self.win = (x, y)
+                        self.hole = (x, y)
                 self.tiles.append(row)
 
     def render_course(self, screen):

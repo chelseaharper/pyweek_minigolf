@@ -1,7 +1,7 @@
 import utilities
 import pygame
 import pymunk
-import objects
+import object
 
 
 class Game:
@@ -35,7 +35,7 @@ class Game:
                     ground.elasticity = 0.9
                     self.space.add(ground)
 
-        self.ball = objects.Object(
+        self.ball = object.Object(
             self.course.start[0],
             self.course.start[1],
             utilities.SCALE,
