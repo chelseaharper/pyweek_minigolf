@@ -20,19 +20,19 @@ class Course:
                     elif line[i] == utilities.COURSE_TILE_HOLE:
                         self.hole = [x, y]
                 self.tiles.append(row)
-            self.objects.append(object.Object(
-                                self.hole[0],
-                                self.hole[1],
-                                utilities.SCALE,
-                                utilities.SCALE,
-                                "hole",
-                                needsbody = False))
-        self.putter = object.Object(300,
-                                    340,
-                                    utilities.SCALE,
-                                    utilities.SCALE,
-                                    "arrow",
-                                    needsbody = False)
+            self.objects.append(
+                object.Object(
+                    self.hole[0],
+                    self.hole[1],
+                    utilities.SCALE,
+                    utilities.SCALE,
+                    "hole",
+                    needsbody=False,
+                )
+            )
+        self.putter = object.Object(
+            300, 340, utilities.SCALE, utilities.SCALE, "arrow", needsbody=False
+        )
 
     def render_course(self, screen):
         for y_pos, line in enumerate(self.tiles):
