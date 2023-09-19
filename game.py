@@ -96,16 +96,16 @@ class Game:
                     self.playstate = utilities.PlayState.MENU
                 elif event.key == pygame.K_w or event.key == pygame.K_UP:
                     print("UP")
-                    self.bodies[0].apply_force_at_local_point((0, -4000), (0, 0))
+                    self.bodies[0].apply_impulse_at_local_point((0, -400), (0, 0))
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     print("DOWN")
-                    self.bodies[0].apply_force_at_local_point((0, 4000), (0, 0))
+                    self.bodies[0].apply_impulse_at_local_point((0, 400), (0, 0))
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     print("LEFT")
-                    self.bodies[0].apply_force_at_local_point((-4000, 0), (0, 0))
+                    self.bodies[0].apply_impulse_at_local_point((-400, 0), (0, 0))
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     print("RIGHT")
-                    self.bodies[0].apply_force_at_local_point((4000, 0), (0, 0))
+                    self.bodies[0].apply_impulse_at_local_point((400, 0), (0, 0))
             if self.playstate == utilities.PlayState.MENU:
                 for i in self.menu.buttons:
                     if i.handle_events():
