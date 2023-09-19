@@ -2,6 +2,7 @@ import utilities
 import pygame
 import pymunk
 import object
+import math
 
 
 class Game:
@@ -58,6 +59,15 @@ class Game:
                 shape.elasticity = 0.9
                 self.space.add(body, shape)
                 self.bodies.append(body)
+    
+    def check_ball_in_hole(self):
+        hole_center = [self.course.hole[0] + (utilities.SCALE / 2), self.course.hole[1] + (utilities.SCALE / 2)]
+        ball_x_distance = abs(self.bodies[0].position[0] - hole_center[0])
+        ball_y_distance = abs(self.bodies[0].position[1] - hole_center[1])
+        ball_dist = math.sqrt((ball_x_distance ** 2) + (ball_y_distance ** 2)) - 100
+        hole_radius = math.sqrt((hole_center[0] ** 2) + (hole_center[1] ** 2)) / 2
+        if ball_dist <= hole_radius:
+            return True
 
     def update(self, dt):
         self.handle_events()  # accepts input from keyboard or mouse
@@ -68,7 +78,7 @@ class Game:
             self.space.step(dt)
             for i, body in enumerate(self.bodies):
                 self.objects[i].update_position(body.position)
-                if self.check_position():
+                if self.check_ball_in_hole():
                     self.bodies[0].velocity = (0, 0)
             self.course.render_course(self.screen)
             for object in self.objects:
@@ -76,10 +86,6 @@ class Game:
 
         if self.playstate == utilities.PlayState.MENU:
             self.menu.render_menu(self.screen)
-
-    def check_position(self):
-        if self.ball.position == self.course.hole:
-            return True
 
     def handle_events(self):
         for event in pygame.event.get():
