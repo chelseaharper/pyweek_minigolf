@@ -61,15 +61,16 @@ class Game:
                 self.bodies.append(body)
 
     def check_ball_in_hole(self):
-        hole_center = [
-            self.course.hole[0] + (utilities.SCALE / 2),
-            self.course.hole[1] + (utilities.SCALE / 2),
-        ]
-        ball_x_distance = abs(self.bodies[0].position[0] - hole_center[0])
-        ball_y_distance = abs(self.bodies[0].position[1] - hole_center[1])
-        ball_dist = math.sqrt((ball_x_distance**2) + (ball_y_distance**2)) - 100
-        hole_radius = math.sqrt((hole_center[0] ** 2) + (hole_center[1] ** 2)) / 2
-        if ball_dist <= hole_radius:
+        hole_radius = 0.5
+        ball_x_distance = abs((self.objects[0].position[0] / utilities.SCALE) - (self.course.hole[0] + 0.5))
+        ball_y_distance = abs((self.objects[0].position[1] / utilities.SCALE) - (self.course.hole[1] + 0.5))
+        print(f"Ball position: {self.objects[0].position}")
+        print(f"Hole position: {self.course.hole}")
+        print(f"X Distance: {ball_x_distance}")
+        print(f"Y Distance: {ball_y_distance}")
+        ball_dist = (ball_x_distance**2) + (ball_y_distance**2)
+        print(f"Distance: {ball_dist}")
+        if ball_dist <= (hole_radius ** 2):
             return True
 
     def update(self, dt):

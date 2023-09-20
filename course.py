@@ -31,8 +31,9 @@ class Course:
                 )
             )
         self.putter = object.Object(
-            300, 340, utilities.SCALE, utilities.SCALE, "arrow", needsbody=False
+            4, 12, utilities.SCALE, utilities.SCALE, "arrow", needsbody=False
         )
+        self.objects.append(self.putter)
 
     def render_course(self, screen):
         for y_pos, line in enumerate(self.tiles):
