@@ -39,10 +39,10 @@ class Game:
                     self.space.add(wall)
 
         self.ball = object.Object(
-            self.course.start[0] + 0.1,
-            self.course.start[1] + 0.1,
-            utilities.SCALE * 0.75,
-            utilities.SCALE * 0.75,
+            self.course.start[0] + 0.2,
+            self.course.start[1] + 0.2,
+            utilities.SCALE * 0.6,
+            utilities.SCALE * 0.6,
             "ball",
         )
         self.objects = []
@@ -64,15 +64,15 @@ class Game:
                 pivot.max_force = 500 # Emulate linear friction
                 self.space.add(body, shape, pivot)
                 self.bodies.append(body)
-        self.putter = object.Object(
-                                    (self.objects[0].position[0] / utilities.SCALE),
-                                    (self.objects[0].position[1] / utilities.SCALE),
-                                    utilities.SCALE,
-                                    utilities.SCALE,
-                                    "arrow",
-                                    needsbody=False
-                                    )
-        self.objects.append(self.putter)
+        self.objects.append(object.Putter(
+                                        (self.objects[0].position[0] / utilities.SCALE),
+                                        (self.objects[0].position[1] / utilities.SCALE),
+                                        utilities.SCALE,
+                                        utilities.SCALE,
+                                        "arrow",
+                                        name="putter",
+                                        needsbody=False
+                                        ))
 
     def check_ball_in_hole(self):
         hole_radius = 0.5
@@ -90,12 +90,13 @@ class Game:
         if self.course is not None:
             self.space.step(dt)
             for i, body in enumerate(self.bodies):
-                if self.objects[i] == self.putter:
-                    self.objects[i].update_position(self.bodies[0].position)
-                else:
-                    self.objects[i].update_position(body.position)
+                self.objects[i].update_position(body.position)
                 if self.check_ball_in_hole():
                     self.bodies[0].velocity = (0, 0)
+            for i in self.objects:
+                if i.name == "putter":
+                    print(i)
+                    i.update_position([(self.objects[0].position[0] - 5), (self.objects[0].position[1] + 30)])
             self.course.render_course(self.screen)
             for object in self.objects:
                 object.render_object(self.screen)

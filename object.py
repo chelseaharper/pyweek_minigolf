@@ -3,11 +3,12 @@ import utilities
 
 
 class Object:
-    def __init__(self, x, y, width, height, image, needsbody=True):
+    def __init__(self, x, y, width, height, image, name=None, needsbody=True):
         self.position = [(x + 0.5) * utilities.SCALE, (y + 0.5) * utilities.SCALE]
         self.width = width
         self.height = height
         self.needsbody = needsbody
+        self.name = name
         self.image = pygame.image.load(f"images/{image}.png")
         self.image = pygame.transform.scale(self.image, (width, height))
 
@@ -22,3 +23,8 @@ class Object:
             self.height,
         )
         screen.blit(self.image, shape)
+
+class Putter(Object):
+    def __init__(self, x, y, width, height, image, name=None, needsbody=True):
+        super().__init__(x, y, width, height, image, name, needsbody)
+        self.image = pygame.transform.rotate(self.image, 270)
