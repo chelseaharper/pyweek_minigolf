@@ -27,12 +27,13 @@ class Course:
                                 utilities.SCALE,
                                 "hole",
                                 needsbody = False))
-        self.putter = object.Object(300,
-                                    340,
+        self.putter = object.Object(self.start[0] + 10,
+                                    self.start[1] + 10,
                                     utilities.SCALE,
                                     utilities.SCALE,
                                     "arrow",
                                     needsbody = False)
+        self.objects.append(self.putter)
 
     def render_course(self, screen):
         for y_pos, line in enumerate(self.tiles):
