@@ -59,12 +59,15 @@ class Game:
                 shape.elasticity = 0.9
                 self.space.add(body, shape)
                 self.bodies.append(body)
-    
+
     def check_ball_in_hole(self):
-        hole_center = [self.course.hole[0] + (utilities.SCALE / 2), self.course.hole[1] + (utilities.SCALE / 2)]
+        hole_center = [
+            self.course.hole[0] + (utilities.SCALE / 2),
+            self.course.hole[1] + (utilities.SCALE / 2),
+        ]
         ball_x_distance = abs(self.bodies[0].position[0] - hole_center[0])
         ball_y_distance = abs(self.bodies[0].position[1] - hole_center[1])
-        ball_dist = math.sqrt((ball_x_distance ** 2) + (ball_y_distance ** 2)) - 100
+        ball_dist = math.sqrt((ball_x_distance**2) + (ball_y_distance**2)) - 100
         hole_radius = math.sqrt((hole_center[0] ** 2) + (hole_center[1] ** 2)) / 2
         if ball_dist <= hole_radius:
             return True
