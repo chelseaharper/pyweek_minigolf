@@ -24,6 +24,8 @@ class Game:
         for y, row in enumerate(course.tiles):
             for x, tile in enumerate(row):
                 if tile == utilities.COURSE_TILE_OFFCOURSE:
+                    ground = self.space.static_body
+                    # Renamed the former "ground" object to "wall" so I could use "ground" to describe the body creating friction
                     wall = pymunk.Poly(
                         self.space.static_body,
                         [
@@ -57,7 +59,10 @@ class Game:
                 body.position = obj.position
                 shape = pymunk.Circle(body, radius)
                 shape.elasticity = 0.9
-                self.space.add(body, shape)
+                pivot = pymunk.PivotJoint(ground, body, (0, 0), (0, 0))
+                pivot.max_bias = 0 # disable joint correction
+                pivot.max_force = 500 # Emulate linear friction
+                self.space.add(body, shape, pivot)
                 self.bodies.append(body)
         self.putter = object.Object(
                                     (self.objects[0].position[0] / utilities.SCALE),
