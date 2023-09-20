@@ -24,7 +24,7 @@ class Game:
         for y, row in enumerate(course.tiles):
             for x, tile in enumerate(row):
                 if tile == utilities.COURSE_TILE_OFFCOURSE:
-                    ground = pymunk.Poly(
+                    wall = pymunk.Poly(
                         self.space.static_body,
                         [
                             (x * utilities.SCALE, y * utilities.SCALE),
@@ -33,8 +33,8 @@ class Game:
                             (x * utilities.SCALE, (y + 1) * utilities.SCALE),
                         ],
                     )
-                    ground.elasticity = 0.9
-                    self.space.add(ground)
+                    wall.elasticity = 0.9
+                    self.space.add(wall)
 
         self.ball = object.Object(
             self.course.start[0] + 0.1,
@@ -59,17 +59,21 @@ class Game:
                 shape.elasticity = 0.9
                 self.space.add(body, shape)
                 self.bodies.append(body)
+        self.putter = object.Object(
+                                    (self.objects[0].position[0] / utilities.SCALE),
+                                    (self.objects[0].position[1] / utilities.SCALE),
+                                    utilities.SCALE,
+                                    utilities.SCALE,
+                                    "arrow",
+                                    needsbody=False
+                                    )
+        self.objects.append(self.putter)
 
     def check_ball_in_hole(self):
         hole_radius = 0.5
         ball_x_distance = abs((self.objects[0].position[0] / utilities.SCALE) - (self.course.hole[0] + 0.5))
         ball_y_distance = abs((self.objects[0].position[1] / utilities.SCALE) - (self.course.hole[1] + 0.5))
-        print(f"Ball position: {self.objects[0].position}")
-        print(f"Hole position: {self.course.hole}")
-        print(f"X Distance: {ball_x_distance}")
-        print(f"Y Distance: {ball_y_distance}")
-        ball_dist = (ball_x_distance**2) + (ball_y_distance**2)
-        print(f"Distance: {ball_dist}")
+        ball_dist = (ball_x_distance ** 2) + (ball_y_distance ** 2)
         if ball_dist <= (hole_radius ** 2):
             return True
 
@@ -81,7 +85,10 @@ class Game:
         if self.course is not None:
             self.space.step(dt)
             for i, body in enumerate(self.bodies):
-                self.objects[i].update_position(body.position)
+                if self.objects[i] == self.putter:
+                    self.objects[i].update_position(self.bodies[0].position)
+                else:
+                    self.objects[i].update_position(body.position)
                 if self.check_ball_in_hole():
                     self.bodies[0].velocity = (0, 0)
             self.course.render_course(self.screen)
