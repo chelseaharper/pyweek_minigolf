@@ -16,7 +16,7 @@ class Game:
         self.gamestate = utilities.GameState.NONE
         self.ball = None
         self.space = None
-        self.bodies = None
+#        self.bodies = None
 
     def change_course(self, course):
         self.course = course
@@ -46,20 +46,20 @@ class Game:
             "ball",
         )
         self.objects = []
-        self.bodies = []
-        for obj in [self.ball] + self.course.objects:
+#        self.bodies = []
+        for obj in [self.course.hole] + [self.ball] + self.course.objects:
             self.objects.append(obj)
             if obj.needsbody == True:
                 pivot = pymunk.PivotJoint(ground, obj.body, (0, 0), (0, 0))
                 pivot.max_bias = 0 # disable joint correction
                 pivot.max_force = 500 # Emulate linear friction
                 self.space.add(obj.body, obj.shape, pivot)
-                self.bodies.append(obj.body)
+#                self.bodies.append(obj.body)
         self.objects.append(self.create_putter())
     
     def create_putter(self):
-        putter = object.Putter((self.objects[0].position[0] / utilities.SCALE),
-                               (self.objects[0].position[1] / utilities.SCALE),
+        putter = object.Putter((self.ball.position[0] / utilities.SCALE),
+                               (self.ball.position[1] / utilities.SCALE),
                                utilities.SCALE,
                                utilities.SCALE,
                                "arrow",
@@ -70,8 +70,8 @@ class Game:
 
     def check_ball_in_hole(self):
         hole_radius = 0.5
-        ball_x_distance = abs((self.objects[0].position[0] / utilities.SCALE) - (self.course.hole[0] + 0.5))
-        ball_y_distance = abs((self.objects[0].position[1] / utilities.SCALE) - (self.course.hole[1] + 0.5))
+        ball_x_distance = abs((self.ball.position[0] / utilities.SCALE) - (self.course.hole_location[0] + 0.5))
+        ball_y_distance = abs((self.ball.position[1] / utilities.SCALE) - (self.course.hole_location[1] + 0.5))
         ball_dist = (ball_x_distance ** 2) + (ball_y_distance ** 2)
         if ball_dist <= (hole_radius ** 2):
             return True
@@ -83,13 +83,14 @@ class Game:
 
         if self.course is not None:
             self.space.step(dt)
-            for i, body in enumerate(self.bodies):
-                self.objects[i].update_position(body.position)
+            for i, object in enumerate(self.objects):
+                if hasattr(object, "body"):
+                    self.objects[i].update_position(object.body.position)
                 if self.check_ball_in_hole():
-                    self.bodies[0].velocity = (0, 0)
+                    self.ball.body.velocity = (0, 0)
             for i in self.objects:
                 if i.name == "putter":
-                    i.update_position([(self.objects[0].position[0] - 5), (self.objects[0].position[1] + 30)])
+                    i.update_position([(self.ball.position[0] - 5), (self.ball.position[1] + 30)])
             self.course.render_course(self.screen)
             for object in self.objects:
                 object.render_object(self.screen)
@@ -106,16 +107,16 @@ class Game:
                     self.playstate = utilities.PlayState.MENU
                 elif event.key == pygame.K_w or event.key == pygame.K_UP:
                     print("UP")
-                    self.bodies[0].apply_impulse_at_local_point((0, -400), (0, 0))
+                    self.ball.body.apply_impulse_at_local_point((0, -400), (0, 0))
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     print("DOWN")
-                    self.bodies[0].apply_impulse_at_local_point((0, 400), (0, 0))
+                    self.ball.body.apply_impulse_at_local_point((0, 400), (0, 0))
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     print("LEFT")
-                    self.bodies[0].apply_impulse_at_local_point((-400, 0), (0, 0))
+                    self.ball.body.apply_impulse_at_local_point((-400, 0), (0, 0))
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     print("RIGHT")
-                    self.bodies[0].apply_impulse_at_local_point((400, 0), (0, 0))
+                    self.ball.body.apply_impulse_at_local_point((400, 0), (0, 0))
             if self.playstate == utilities.PlayState.MENU:
                 for i in self.menu.buttons:
                     if i.handle_events():

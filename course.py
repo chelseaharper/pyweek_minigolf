@@ -17,19 +17,19 @@ class Course:
                     x = i // 2
                     if line[i] == utilities.COURSE_TILE_START:
                         self.start = (x, y)
+                        print(f"start position: {self.start}")
                     elif line[i] == utilities.COURSE_TILE_HOLE:
-                        self.hole = [x, y]
+                        self.hole_location = [x, y]
+                        print(f"hole position: {self.hole_location}")
                 self.tiles.append(row)
-            self.objects.append(
-                object.Object(
-                    self.hole[0],
-                    self.hole[1],
-                    utilities.SCALE,
-                    utilities.SCALE,
-                    "hole",
-                    needsbody=False,
-                )
-            )
+            self.hole = object.Object(
+                                    self.hole_location[0],
+                                    self.hole_location[1],
+                                    utilities.SCALE,
+                                    utilities.SCALE,
+                                    "hole",
+                                    needsbody=False,
+                                    )
 
     def render_course(self, screen):
         for y_pos, line in enumerate(self.tiles):
