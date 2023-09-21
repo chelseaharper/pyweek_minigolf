@@ -1,5 +1,6 @@
 import pygame
 import utilities
+import pymunk
 
 
 class Object:
@@ -11,6 +12,17 @@ class Object:
         self.name = name
         self.image = pygame.image.load(f"images/{image}.png")
         self.image = pygame.transform.scale(self.image, (width, height))
+        self.set_up(1, utilities.SCALE / 2, 0.9)
+    
+    def set_up(self, mass, radius, elasticity):
+        moment = pymunk.moment_for_circle(
+                    mass=mass, inner_radius=0, outer_radius=radius
+                )
+        self.body = pymunk.Body(mass, moment)
+        self.body.position = self.position
+        self.shape = pymunk.Circle(self.body, radius)
+        self.shape.elasticity = elasticity
+        
 
     def update_position(self, newposition):
         self.position = [newposition[0], newposition[1]]

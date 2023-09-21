@@ -21,10 +21,10 @@ class Game:
     def change_course(self, course):
         self.course = course
         self.space = pymunk.Space()
+        ground = self.space.static_body
         for y, row in enumerate(course.tiles):
             for x, tile in enumerate(row):
                 if tile == utilities.COURSE_TILE_OFFCOURSE:
-                    ground = self.space.static_body
                     # Renamed the former "ground" object to "wall" so I could use "ground" to describe the body creating friction
                     wall = pymunk.Poly(
                         self.space.static_body,
@@ -50,29 +50,23 @@ class Game:
         for obj in [self.ball] + self.course.objects:
             self.objects.append(obj)
             if obj.needsbody == True:
-                mass = 1
-                radius = utilities.SCALE / 2
-                moment = pymunk.moment_for_circle(
-                    mass=mass, inner_radius=0, outer_radius=radius
-                )
-                body = pymunk.Body(mass, moment)
-                body.position = obj.position
-                shape = pymunk.Circle(body, radius)
-                shape.elasticity = 0.9
-                pivot = pymunk.PivotJoint(ground, body, (0, 0), (0, 0))
+                pivot = pymunk.PivotJoint(ground, obj.body, (0, 0), (0, 0))
                 pivot.max_bias = 0 # disable joint correction
                 pivot.max_force = 500 # Emulate linear friction
-                self.space.add(body, shape, pivot)
-                self.bodies.append(body)
-        self.objects.append(object.Putter(
-                                        (self.objects[0].position[0] / utilities.SCALE),
-                                        (self.objects[0].position[1] / utilities.SCALE),
-                                        utilities.SCALE,
-                                        utilities.SCALE,
-                                        "arrow",
-                                        name="putter",
-                                        needsbody=False
-                                        ))
+                self.space.add(obj.body, obj.shape, pivot)
+                self.bodies.append(obj.body)
+        self.objects.append(self.create_putter())
+    
+    def create_putter(self):
+        putter = object.Putter((self.objects[0].position[0] / utilities.SCALE),
+                               (self.objects[0].position[1] / utilities.SCALE),
+                               utilities.SCALE,
+                               utilities.SCALE,
+                               "arrow",
+                               name="putter",
+                               needsbody=False
+                               )
+        return putter
 
     def check_ball_in_hole(self):
         hole_radius = 0.5
@@ -95,7 +89,6 @@ class Game:
                     self.bodies[0].velocity = (0, 0)
             for i in self.objects:
                 if i.name == "putter":
-                    print(i)
                     i.update_position([(self.objects[0].position[0] - 5), (self.objects[0].position[1] + 30)])
             self.course.render_course(self.screen)
             for object in self.objects:
