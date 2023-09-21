@@ -16,7 +16,7 @@ class Game:
         self.gamestate = utilities.GameState.NONE
         self.ball = None
         self.space = None
-#        self.bodies = None
+        self.putter = None
 
     def change_course(self, course):
         self.course = course
@@ -46,7 +46,6 @@ class Game:
             "ball",
         )
         self.objects = []
-#        self.bodies = []
         for obj in [self.course.hole] + [self.ball] + self.course.objects:
             self.objects.append(obj)
             if obj.needsbody == True:
@@ -54,8 +53,8 @@ class Game:
                 pivot.max_bias = 0 # disable joint correction
                 pivot.max_force = 500 # Emulate linear friction
                 self.space.add(obj.body, obj.shape, pivot)
-#                self.bodies.append(obj.body)
-        self.objects.append(self.create_putter())
+        self.putter = self.create_putter()
+        self.objects.append(self.putter)
     
     def create_putter(self):
         putter = object.Putter((self.ball.position[0] / utilities.SCALE),
@@ -127,3 +126,6 @@ class Game:
                                 self.change_course(self.courses[0])
                             self.playstate = utilities.PlayState.COURSE
                             self.gamestate = utilities.GameState.RUNNING
+            elif self.playstate == utilities.PlayState.COURSE:
+                mouse_pos = pygame.mouse.get_pos()
+                self.putter.update(mouse_pos)

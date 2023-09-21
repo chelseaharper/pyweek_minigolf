@@ -1,6 +1,7 @@
 import pygame
 import utilities
 import pymunk
+import math
 
 
 class Object:
@@ -42,4 +43,22 @@ class Object:
 class Putter(Object):
     def __init__(self, x, y, width, height, image, name=None, needsbody=True):
         super().__init__(x, y, width, height, image, name, needsbody)
-        self.image = pygame.transform.rotate(self.image, 270)
+        self.original_image = self.image
+        self.angle = 270
+        self.image = pygame.transform.rotate(self.image, self.angle)
+    
+    def render_object(self, screen):
+        shape = pygame.Rect(
+            self.position[0] - utilities.SCALE / 2,
+            self.position[1] - utilities.SCALE / 2,
+            self.width * 2,
+            self.height,
+        )
+        self.image = pygame.transform.rotate(self.original_image, self.angle)
+        screen.blit(self.image, shape)
+    
+    def update(self, mouse_pos):
+        x_dist = self.position[0] - mouse_pos[0]
+        y_dist = -(self.position[1] - mouse_pos[1]) # negative vector because pygame increases y down the screen
+        angle = math.degrees(math.atan2(y_dist, x_dist))
+        self.angle = angle
