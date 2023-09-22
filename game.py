@@ -17,6 +17,7 @@ class Game:
         self.ball = None
         self.space = None
         self.putter = None
+        self.taking_shot = True
 
     def change_course(self, course):
         self.course = course
@@ -61,7 +62,7 @@ class Game:
                                (self.ball.position[1] / utilities.SCALE),
                                utilities.SCALE,
                                utilities.SCALE,
-                               "arrow",
+                               "scaled_arrow",
                                name="putter",
                                needsbody=False
                                )
@@ -91,8 +92,15 @@ class Game:
                 if i.name == "putter":
                     i.update_position([(self.ball.position[0] - 5), (self.ball.position[1] + 30)])
             self.course.render_course(self.screen)
+            self.taking_shot = True
+            if int(self.ball.body.velocity[0]) != 0 or int(self.ball.body.velocity[1] != 0):
+                self.taking_shot = False
             for object in self.objects:
-                object.render_object(self.screen)
+                if object.name == "putter":
+                    if self.taking_shot == True:
+                        object.render_object(self.screen)
+                else:
+                    object.render_object(self.screen)
 
         if self.playstate == utilities.PlayState.MENU:
             self.menu.render_menu(self.screen)
@@ -104,18 +112,18 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.playstate = utilities.PlayState.MENU
-                elif event.key == pygame.K_w or event.key == pygame.K_UP:
-                    print("UP")
-                    self.ball.body.apply_impulse_at_local_point((0, -400), (0, 0))
-                elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    print("DOWN")
-                    self.ball.body.apply_impulse_at_local_point((0, 400), (0, 0))
-                elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    print("LEFT")
-                    self.ball.body.apply_impulse_at_local_point((-400, 0), (0, 0))
-                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    print("RIGHT")
-                    self.ball.body.apply_impulse_at_local_point((400, 0), (0, 0))
+                # elif event.key == pygame.K_w or event.key == pygame.K_UP:
+                #     print("UP")
+                #     self.ball.body.apply_impulse_at_local_point((0, -400), (0, 0))
+                # elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                #     print("DOWN")
+                #     self.ball.body.apply_impulse_at_local_point((0, 400), (0, 0))
+                # elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                #     print("LEFT")
+                #     self.ball.body.apply_impulse_at_local_point((-400, 0), (0, 0))
+                # elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                #     print("RIGHT")
+                #     self.ball.body.apply_impulse_at_local_point((400, 0), (0, 0))
             if self.playstate == utilities.PlayState.MENU:
                 for i in self.menu.buttons:
                     if i.handle_events():
@@ -126,6 +134,9 @@ class Game:
                                 self.change_course(self.courses[0])
                             self.playstate = utilities.PlayState.COURSE
                             self.gamestate = utilities.GameState.RUNNING
-            elif self.playstate == utilities.PlayState.COURSE:
+            elif self.playstate == utilities.PlayState.COURSE and self.taking_shot == True:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    impulse = self.putter.get_angle(400)
+                    self.ball.body.apply_impulse_at_local_point((impulse[0], impulse[1]), (0, 0))
                 mouse_pos = pygame.mouse.get_pos()
                 self.putter.update(mouse_pos)

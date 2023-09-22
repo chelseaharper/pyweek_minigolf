@@ -62,3 +62,8 @@ class Putter(Object):
         y_dist = -(self.position[1] - mouse_pos[1]) # negative vector because pygame increases y down the screen
         angle = math.degrees(math.atan2(y_dist, x_dist))
         self.angle = angle
+    
+    def get_angle(self, force):
+        x_impulse = math.cos(math.radians(self.angle))
+        y_impulse = math.sin(math.radians(self.angle))
+        return [force * -x_impulse, force * y_impulse]
