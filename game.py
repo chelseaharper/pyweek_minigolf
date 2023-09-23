@@ -2,7 +2,7 @@ import utilities
 import pygame
 import pymunk
 import object
-import math
+import menu_builder
 
 
 class Game:
@@ -17,7 +17,7 @@ class Game:
         self.ball = None
         self.space = None
         self.putter = None
-        self.taking_shot = True
+        self.taking_shot = False
         self.powering = False
 
     def change_course(self, course):
@@ -39,6 +39,7 @@ class Game:
                     )
                     wall.elasticity = 0.9
                     self.space.add(wall)
+        self.taking_shot = True
 
         self.ball = object.Object(
             self.course.start[0] + 0.2,
@@ -89,13 +90,17 @@ class Game:
                     self.objects[i].update_position(object.body.position)
                 if self.check_ball_in_hole():
                     self.ball.body.velocity = (0, 0)
+                    self.taking_shot = False
+                    display = menu_builder.TextDisplay((self.ball.position[0] - 5), (self.ball.position[1] + 30), "You WIN!")
+                    display.render(self.screen)
             for i in self.objects:
                 if i.name == "putter":
                     i.update_position([(self.ball.position[0] - 5), (self.ball.position[1] + 30)])
             self.course.render_course(self.screen)
-            self.taking_shot = True
             if int(self.ball.body.velocity[0]) != 0 or int(self.ball.body.velocity[1] != 0):
                 self.taking_shot = False
+            elif int(self.ball.body.velocity[0]) == 0 and int(self.ball.body.velocity[1] == 0) and not self.check_ball_in_hole():
+                self.taking_shot = True
             for object in self.objects:
                 if object.name == "putter":
                     if self.taking_shot == True:
@@ -113,18 +118,6 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.playstate = utilities.PlayState.MENU
-                # elif event.key == pygame.K_w or event.key == pygame.K_UP:
-                #     print("UP")
-                #     self.ball.body.apply_impulse_at_local_point((0, -400), (0, 0))
-                # elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                #     print("DOWN")
-                #     self.ball.body.apply_impulse_at_local_point((0, 400), (0, 0))
-                # elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                #     print("LEFT")
-                #     self.ball.body.apply_impulse_at_local_point((-400, 0), (0, 0))
-                # elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                #     print("RIGHT")
-                #     self.ball.body.apply_impulse_at_local_point((400, 0), (0, 0))
             if self.playstate == utilities.PlayState.MENU:
                 for i in self.menu.buttons:
                     if i.handle_events():

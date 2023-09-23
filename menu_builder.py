@@ -76,4 +76,17 @@ start_button = Button(
     200,
     50,
 )
-# resume_button = Button(utilities.SCREEN_WIDTH // 3, 100, "Resume", "buttonLong_blue", "buttonLong_blue_pressed", 200, 50)
+
+class TextDisplay:
+    def __init__(self, x, y, text):
+        self.text = text
+        self.position = [x, y]
+        self.background = pygame.image.load("images/panel_blue.png")
+        self.background = pygame.transform.scale(self.background, (utilities.SCALE * 2, utilities.SCALE * 4))
+        self.rect = pygame.Rect(self.position[0], self.position[1], utilities.SCALE * 2, utilities.SCALE * 4)
+        self.text = font.render(text, True, utilities.WHITE)
+        self.textRect = self.text.get_rect()
+    
+    def render(self, screen):
+        screen.blit(self.background, self.rect)
+        screen.blit(self.text, self.textRect)
