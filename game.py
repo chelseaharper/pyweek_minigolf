@@ -20,6 +20,15 @@ class Game:
         self.taking_shot = False
         self.course_num = 0
         self.strokes = 0
+        self.stroke_counter = menu_builder.TextDisplay(
+                            50,
+                            300,
+                            utilities.SCALE * 5,
+                            utilities.SCALE * 5,
+                            "Course Strokes: 0 Total Strokes: 0",
+                            menu_builder.small_font,
+                            utilities.WHITE
+                            )
 
     def change_course(self, course):
         self.course = course
@@ -88,13 +97,22 @@ class Game:
         if self.course is not None:
             self.space.step(dt)
             self.course.render_course(self.screen)
+            self.stroke_counter.render(self.screen)
             for i, object in enumerate(self.objects):
                 if hasattr(object, "body"):
                     self.objects[i].update_position(object.body.position)
                 if self.check_ball_in_hole():
                     self.ball.body.velocity = (0, 0)
                     self.taking_shot = False
-                    display = menu_builder.TextDisplay(200, 100, "You WIN!")
+                    display = menu_builder.TextDisplay(
+                                    200,
+                                    100,
+                                    utilities.SCALE * 5,
+                                    utilities.SCALE * 3,
+                                    "You WIN!",
+                                    menu_builder.large_font,
+                                    utilities.WHITE
+                                    )
                     display.render(self.screen)
             for i in self.objects:
                 if i.name == "putter":

@@ -3,7 +3,8 @@ import utilities
 
 
 pygame.font.init()
-font = pygame.font.Font(None, 45)
+large_font = pygame.font.Font(None, 30)
+small_font = pygame.font.Font(None, 30)
 
 
 class Menu:
@@ -31,7 +32,7 @@ class Button:
         self.image_name1 = image_name1
         self.image_name2 = image_name2
         self.clicked = False
-        self.text = font.render(name, True, utilities.WHITE)
+        self.text = large_font.render(name, True, utilities.WHITE)
         self.textRect = self.text.get_rect()
         self.textRect.center = (
             self.position[0] + (width // 2),
@@ -78,21 +79,32 @@ start_button = Button(
 )
 
 class TextDisplay:
-    def __init__(self, x, y, text):
+    def __init__(self, x, y, width, height, text, font, color):
         self.text = text
-        self.width = utilities.SCALE * 5
-        self.height = utilities.SCALE * 3
+        self.width = width
+        self.height = height
         self.position = [x, y]
         self.background = pygame.image.load("images/panel_blue.png")
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.rect = pygame.Rect(self.position[0], self.position[1], self.width, self.height)
-        self.text = font.render(text, True, utilities.WHITE)
-        self.textRect = self.text.get_rect()
-        self.textRect.center = (
-            self.position[0] + (self.width // 2),
-            self.position[1] + (self.height // 2),
-        )
+        self.text = text
+        self.font = font
+        self.color = color
     
     def render(self, screen):
         screen.blit(self.background, self.rect)
-        screen.blit(self.text, self.textRect)
+        words = [word.split(" ") for word in self.text.splitlines()]
+        space = self.font.size(" ")[0]
+        max_width, max_height = (self.width, self.height)
+        x, y = (self.position[0] + 5, self.position[1] + 5)
+        for line in words:
+            for word in line:
+                word_surface = self.font.render(word, 1, self.color)
+                word_width, word_height = word_surface.get_size()
+                if x + word_width >= max_width:
+                    x = self.position[0] + 5
+                    y += word_height
+                screen.blit(word_surface, (x, y))
+                x += word_width + space
+            x = self.position[0]
+            y += word_height
