@@ -3,7 +3,7 @@ import utilities
 
 
 pygame.font.init()
-large_font = pygame.font.Font(None, 30)
+large_font = pygame.font.Font(None, 45)
 small_font = pygame.font.Font(None, 30)
 
 
@@ -91,20 +91,32 @@ class TextDisplay:
         self.font = font
         self.color = color
     
+    def update_text(self, newtext):
+        self.text = newtext
+    
     def render(self, screen):
         screen.blit(self.background, self.rect)
         words = [word.split(" ") for word in self.text.splitlines()]
         space = self.font.size(" ")[0]
         max_width, max_height = (self.width, self.height)
-        x, y = (self.position[0] + 5, self.position[1] + 5)
-        for line in words:
-            for word in line:
-                word_surface = self.font.render(word, 1, self.color)
-                word_width, word_height = word_surface.get_size()
-                if x + word_width >= max_width:
-                    x = self.position[0] + 5
-                    y += word_height
-                screen.blit(word_surface, (x, y))
-                x += word_width + space
-            x = self.position[0]
-            y += word_height
+        if self.font.render(self.text, 0, self.color).get_size() > (max_width, max_height):
+            x, y = (self.position[0] + 5, self.position[1] + 5)
+            for line in words:
+                for word in line:
+                    word_surface = self.font.render(word, True, self.color)
+                    word_width, word_height = word_surface.get_size()
+                    if x + word_width >= max_width:
+                        x = self.position[0] + 5
+                        y += word_height
+                    screen.blit(word_surface, (x, y))
+                    x += word_width + space
+                x = self.position[0]
+                y += word_height
+        else:
+            self.text = large_font.render(self.text, True, utilities.WHITE)
+            self.textRect = self.text.get_rect()
+            self.textRect.center = (
+            self.position[0] + (self.width // 2),
+            self.position[1] + (self.height // 2),
+            )
+            screen.blit(self.text, self.textRect)

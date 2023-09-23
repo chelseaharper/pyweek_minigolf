@@ -20,12 +20,13 @@ class Game:
         self.taking_shot = False
         self.course_num = 0
         self.strokes = 0
+        self.coursestrokes = 0
         self.stroke_counter = menu_builder.TextDisplay(
                             50,
                             300,
                             utilities.SCALE * 5,
                             utilities.SCALE * 5,
-                            "Course Strokes: 0 Total Strokes: 0",
+                            f"Course Strokes: {self.coursestrokes} Total Strokes: {self.strokes}",
                             menu_builder.small_font,
                             utilities.WHITE
                             )
@@ -33,6 +34,8 @@ class Game:
     def change_course(self, course):
         self.course = course
         self.course_num += 1
+        self.coursestrokes = 0
+        self.stroke_counter.update_text(f"Course Strokes: {self.coursestrokes} Total Strokes: {self.strokes}")
         self.space = pymunk.Space()
         ground = self.space.static_body
         for y, row in enumerate(course.tiles):
@@ -153,6 +156,8 @@ class Game:
                     impulse = self.putter.get_angle(self.putter.force)
                     self.ball.body.apply_impulse_at_local_point((impulse[0], impulse[1]), (0, 0))
                     self.strokes += 1
+                    self.coursestrokes += 1
+                    self.stroke_counter.update_text(f"Course Strokes: {self.coursestrokes} Total Strokes: {self.strokes}")
                     print(self.strokes)
                 mouse_pos = pygame.mouse.get_pos()
                 self.putter.update(mouse_pos)
