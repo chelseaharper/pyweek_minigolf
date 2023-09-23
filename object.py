@@ -46,6 +46,8 @@ class Putter(Object):
         self.original_image = self.image
         self.angle = 270
         self.image = pygame.transform.rotate(self.image, self.angle)
+        self.force = 400
+        self.force_direction = 1
     
     def render_object(self, screen):
         shape = pygame.Rect(

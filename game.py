@@ -18,6 +18,7 @@ class Game:
         self.space = None
         self.putter = None
         self.taking_shot = True
+        self.powering = False
 
     def change_course(self, course):
         self.course = course
@@ -136,7 +137,7 @@ class Game:
                             self.gamestate = utilities.GameState.RUNNING
             elif self.playstate == utilities.PlayState.COURSE and self.taking_shot == True:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    impulse = self.putter.get_angle(400)
+                    impulse = self.putter.get_angle(self.putter.force)
                     self.ball.body.apply_impulse_at_local_point((impulse[0], impulse[1]), (0, 0))
                 mouse_pos = pygame.mouse.get_pos()
                 self.putter.update(mouse_pos)
