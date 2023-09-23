@@ -80,12 +80,18 @@ start_button = Button(
 class TextDisplay:
     def __init__(self, x, y, text):
         self.text = text
+        self.width = utilities.SCALE * 5
+        self.height = utilities.SCALE * 3
         self.position = [x, y]
         self.background = pygame.image.load("images/panel_blue.png")
-        self.background = pygame.transform.scale(self.background, (utilities.SCALE * 2, utilities.SCALE * 4))
-        self.rect = pygame.Rect(self.position[0], self.position[1], utilities.SCALE * 2, utilities.SCALE * 4)
+        self.background = pygame.transform.scale(self.background, (self.width, self.height))
+        self.rect = pygame.Rect(self.position[0], self.position[1], self.width, self.height)
         self.text = font.render(text, True, utilities.WHITE)
         self.textRect = self.text.get_rect()
+        self.textRect.center = (
+            self.position[0] + (self.width // 2),
+            self.position[1] + (self.height // 2),
+        )
     
     def render(self, screen):
         screen.blit(self.background, self.rect)

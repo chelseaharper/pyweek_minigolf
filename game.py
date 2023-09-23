@@ -18,10 +18,12 @@ class Game:
         self.space = None
         self.putter = None
         self.taking_shot = False
-        self.powering = False
+        self.course_num = 0
+        self.strokes = 0
 
     def change_course(self, course):
         self.course = course
+        self.course_num += 1
         self.space = pymunk.Space()
         ground = self.space.static_body
         for y, row in enumerate(course.tiles):
@@ -85,18 +87,18 @@ class Game:
 
         if self.course is not None:
             self.space.step(dt)
+            self.course.render_course(self.screen)
             for i, object in enumerate(self.objects):
                 if hasattr(object, "body"):
                     self.objects[i].update_position(object.body.position)
                 if self.check_ball_in_hole():
                     self.ball.body.velocity = (0, 0)
                     self.taking_shot = False
-                    display = menu_builder.TextDisplay((self.ball.position[0] - 5), (self.ball.position[1] + 30), "You WIN!")
+                    display = menu_builder.TextDisplay(200, 100, "You WIN!")
                     display.render(self.screen)
             for i in self.objects:
                 if i.name == "putter":
                     i.update_position([(self.ball.position[0] - 5), (self.ball.position[1] + 30)])
-            self.course.render_course(self.screen)
             if int(self.ball.body.velocity[0]) != 0 or int(self.ball.body.velocity[1] != 0):
                 self.taking_shot = False
             elif int(self.ball.body.velocity[0]) == 0 and int(self.ball.body.velocity[1] == 0) and not self.check_ball_in_hole():
@@ -132,5 +134,7 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     impulse = self.putter.get_angle(self.putter.force)
                     self.ball.body.apply_impulse_at_local_point((impulse[0], impulse[1]), (0, 0))
+                    self.strokes += 1
+                    print(self.strokes)
                 mouse_pos = pygame.mouse.get_pos()
                 self.putter.update(mouse_pos)
