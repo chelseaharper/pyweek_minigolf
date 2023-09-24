@@ -7,6 +7,7 @@ import course
 # Initial setup of pygame elements
 pygame.init()
 screen = pygame.display.set_mode((utilities.SCREEN_WIDTH, utilities.SCREEN_HEIGHT))
+pygame.display.set_caption("Minigolf")
 clock = pygame.time.Clock()
 
 # Initial setup of game-specific elements, including definition of menus, game instance, and courses
