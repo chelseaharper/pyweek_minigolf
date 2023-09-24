@@ -18,7 +18,29 @@ class Course:
                     if line[i] == utilities.COURSE_TILE_START:
                         self.start = (x, y)
                     elif line[i] == utilities.COURSE_TILE_HOLE:
-                        self.hole_location = [x, y]
+                        self.hole_location = (x, y)
+                    elif line[i] == utilities.COURSE_TILE_BLOCK:
+                        block_position = (x, y)
+                        block = object.Object(
+                                            block_position[0],
+                                            block_position[1],
+                                            utilities.SCALE,
+                                            utilities.SCALE,
+                                            "block",
+                                            is_static=True
+                                            )
+                        self.objects.append(block)
+                    elif line[i] == utilities.COURSE_TILE_POST:
+                        post_position = (x, y)
+                        post = object.Object(
+                                            post_position[0],
+                                            post_position[1],
+                                            utilities.SCALE,
+                                            utilities.SCALE,
+                                            "post",
+                                            is_static=True
+                                            )
+                        self.objects.append(post)
                 self.tiles.append(row)
             self.hole = object.Object(
                                     self.hole_location[0],
@@ -53,6 +75,12 @@ course_tile_images = {
         pygame.image.load("images/dirt.png"), (utilities.SCALE, utilities.SCALE)
     ),
     utilities.COURSE_TILE_HOLE: pygame.transform.scale(
+        pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)
+    ),
+    utilities.COURSE_TILE_POST: pygame.transform.scale(
+        pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)
+    ),
+    utilities.COURSE_TILE_BLOCK: pygame.transform.scale(
         pygame.image.load("images/grass.png"), (utilities.SCALE, utilities.SCALE)
     ),
     utilities.COURSE_TILE_START: pygame.transform.scale(

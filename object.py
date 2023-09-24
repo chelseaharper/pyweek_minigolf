@@ -5,12 +5,13 @@ import math
 
 
 class Object:
-    def __init__(self, x, y, width, height, image, name=None, needsbody=True):
+    def __init__(self, x, y, width, height, image, name=None, needsbody=True, is_static=False):
         self.position = [(x + 0.5) * utilities.SCALE, (y + 0.5) * utilities.SCALE]
         self.width = width
         self.height = height
         self.needsbody = needsbody
         self.name = name
+        self.is_static = is_static
         self.image = pygame.image.load(f"images/{image}.png")
         self.image = pygame.transform.scale(self.image, (width, height))
         self.set_up(1, utilities.SCALE / 2, 0.9)
@@ -20,7 +21,10 @@ class Object:
             moment = pymunk.moment_for_circle(
                     mass=mass, inner_radius=0, outer_radius=radius
                 )
-            self.body = pymunk.Body(mass, moment)
+            if self.is_static == False:
+                self.body = pymunk.Body(mass, moment)
+            elif self.is_static == True:
+                self.body = pymunk.Body(mass, moment, body_type=pymunk.Body.STATIC)
             self.body.position = self.position
             self.shape = pymunk.Circle(self.body, radius)
             self.shape.elasticity = elasticity

@@ -62,14 +62,18 @@ class Game:
             utilities.SCALE * 0.6,
             "ball",
         )
+        self.ball.body.velocity = [0, 0]
         self.objects = []
-        for obj in [self.course.hole] + [self.ball] + self.course.objects:
+        for obj in [self.course.hole] + self.course.objects + [self.ball]:
             self.objects.append(obj)
-            if obj.needsbody == True:
+            if obj.needsbody == True and obj.is_static == False:
                 pivot = pymunk.PivotJoint(ground, obj.body, (0, 0), (0, 0))
                 pivot.max_bias = 0 # disable joint correction
                 pivot.max_force = 500 # Emulate linear friction
                 self.space.add(obj.body, obj.shape, pivot)
+            elif obj.needsbody == True and obj.is_static == True:
+                self.space.add(obj.body, obj.shape)
+            
         self.putter = self.create_putter()
         self.objects.append(self.putter)
     
