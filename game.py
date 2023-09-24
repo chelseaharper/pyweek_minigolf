@@ -21,6 +21,7 @@ class Game:
         self.course_num = 0
         self.strokes = 0
         self.coursestrokes = 0
+        self.course_complete = False
         self.stroke_counter = menu_builder.TextDisplay(
                             50,
                             300,
@@ -41,7 +42,6 @@ class Game:
         for y, row in enumerate(course.tiles):
             for x, tile in enumerate(row):
                 if tile == utilities.COURSE_TILE_OFFCOURSE:
-                    # Renamed the former "ground" object to "wall" so I could use "ground" to describe the body creating friction
                     wall = pymunk.Poly(
                         self.space.static_body,
                         [
@@ -111,16 +111,31 @@ class Game:
                 if self.check_ball_in_hole():
                     self.ball.body.velocity = (0, 0)
                     self.taking_shot = False
-                    display = menu_builder.TextDisplay(
-                                    200,
-                                    100,
-                                    utilities.SCALE * 5,
-                                    utilities.SCALE * 3,
-                                    "You WIN!",
-                                    menu_builder.large_font,
-                                    utilities.WHITE
-                                    )
-                    display.render(self.screen)
+                    if self.course_num == len(self.courses):
+                        display = menu_builder.TextDisplay(
+                                                200,
+                                                100,
+                                                utilities.SCALE * 5,
+                                                utilities.SCALE * 3,
+                                                "You Win!",
+                                                menu_builder.large_font,
+                                                utilities.WHITE
+                                                )
+                        display.render(self.screen)
+                    else:
+                        display = menu_builder.TextDisplay(
+                                                200,
+                                                100,
+                                                utilities.SCALE * 5,
+                                                utilities.SCALE * 3,
+                                                "Course Complete!",
+                                                menu_builder.large_font,
+                                                utilities.WHITE
+                                                )
+                        display.render(self.screen)
+                        self.course_complete = True
+#                        self.change_course(self.courses[(0 + self.course_num)])
+                    
             for i in self.objects:
                 if i.name == "putter":
                     i.update_position([(self.ball.position[0] - 5), (self.ball.position[1] + 30)])
@@ -165,3 +180,8 @@ class Game:
                     print(self.strokes)
                 mouse_pos = pygame.mouse.get_pos()
                 self.putter.update(mouse_pos)
+            elif self.course_complete == True:
+                pygame.time.delay(1000)
+                self.change_course(self.courses[(0 + self.course_num)])
+                self.course_complete = False
+

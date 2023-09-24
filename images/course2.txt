@@ -1,0 +1,15 @@
+` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
+` G G G G G G G G G G G G G ` ` ` ` ` `
+` G G H G G G G G G G G G G ` ` ` ` ` `
+` G G G G G G P G G G G G G ` ` ` ` ` `
+` G G G G G G G G G G G G G ` ` ` ` ` `
+` ` ` ` ` ` ` G G G G G G G ` ` ` ` ` `
+` ` ` ` ` ` ` G G G B G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` G G G G G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` ` G G G G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` ` G G G G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` ` G G G G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` ` G G G G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` ` G G S G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` ` G G G G G ` ` ` ` ` ` `
+` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` 

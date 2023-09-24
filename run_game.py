@@ -16,8 +16,9 @@ start_menu = menu_builder.Menu(
 )
 
 course1 = course.Course("course1", [])
+course2 = course.Course("course1", [])
 
-game_instance = game.Game(screen, [course1], start_menu)
+game_instance = game.Game(screen, [course1, course2], start_menu)
 
 # Main Game Loop; all game mechanics managed in game_instance.update()
 while True:
