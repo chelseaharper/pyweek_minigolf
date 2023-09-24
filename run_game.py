@@ -16,7 +16,7 @@ start_menu = menu_builder.Menu(
 )
 
 course1 = course.Course("course1", [])
-course2 = course.Course("course1", [])
+course2 = course.Course("course2", [])
 
 game_instance = game.Game(screen, [course1, course2], start_menu)
 
